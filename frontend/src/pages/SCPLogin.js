@@ -1,4 +1,3 @@
-// === src/pages/SCPLogin.js ===
 import React, { useState } from 'react';
 import API from '../utils/api';
 import { useNavigate, Link } from 'react-router-dom';
