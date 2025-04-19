@@ -7,7 +7,7 @@ dotenv.config();
 connectDB();
 
 const app = express();
-app.use(cors()); // <--- THIS LINE FIXES YOUR CORS ERROR
+app.use(cors()); 
 app.use(express.json());
 
 app.use('/api/scp', require('./routes/auth'));

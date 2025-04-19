@@ -1,6 +1,5 @@
 const Farmer = require('../models/Farmer');
 
-// POST /api/farmers/add
 exports.addFarmer = async (req, res) => {
   try {
     const { name, phone, village, crop } = req.body;
@@ -9,7 +8,7 @@ exports.addFarmer = async (req, res) => {
       phone,
       village,
       crop,
-      scpId: req.user.id, // this comes from JWT auth
+      scpId: req.user.id, 
     });
     await newFarmer.save();
     res.status(201).json({ message: 'Farmer added successfully', farmer: newFarmer });
@@ -19,11 +18,22 @@ exports.addFarmer = async (req, res) => {
   }
 };
 
-// GET /api/farmers/list
 exports.getFarmers = async (req, res) => {
   try {
-    const farmers = await Farmer.find({ scpId: req.user.id });
-    res.json(farmers);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+    const skip = (page - 1) * limit;
+
+    const total = await Farmer.countDocuments({ scpId: req.user.id });
+    const farmers = await Farmer.find({ scpId: req.user.id })
+                                .skip(skip)
+                                .limit(limit);
+
+    res.json({
+      totalPages: Math.ceil(total / limit),
+      currentPage: page,
+      data: farmers
+    });
   } catch (err) {
     res.status(500).json({ error: 'Unable to fetch farmers' });
   }
