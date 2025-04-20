@@ -41,6 +41,11 @@ node server.js
 ---
 
 ### 3. Setup Frontend
+
+**Important:** Make sure the backend server is running before using the frontend.  
+The frontend depends on the backend API to fetch and store farmer data.
+
+
 ```bash
 cd frontend
 npm install
